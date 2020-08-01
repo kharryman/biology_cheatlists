@@ -1,0 +1,1 @@
+CALL emulator -avd Pixel_API_30
