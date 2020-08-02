@@ -10,6 +10,7 @@ import Loader from './components/Loader';
 import styled from 'styled-components/native';
 import SplashScreen from 'react-native-splash-screen';
 
+//AD_MOBS APP_ID:ca-app-pub-8514966468184377/6888473916
 const isAllScience = false;
 
 class App extends React.Component {
