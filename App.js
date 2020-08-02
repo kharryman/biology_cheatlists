@@ -8,10 +8,15 @@ import Cheatlist from './components/Cheatlist';
 import { Button, Text, View, Image, ImageBackground, StyleSheet } from "react-native";
 import Loader from './components/Loader';
 import styled from 'styled-components/native';
+import SplashScreen from 'react-native-splash-screen';
 
 const isAllScience = false;
 
 class App extends React.Component {
+
+   componentDidMount() {
+      SplashScreen.hide()
+    }
 
    constructor(props) {
       super(props);
@@ -42,9 +47,9 @@ class App extends React.Component {
    render() {
       const listOpen = this.state.listOpen;
       let header = "Science Cheatsheet";
-      let subheader = this.state.subtopic + " Cheatsheet";
+      let subheader = this.state.subtopic + " Cheatlists";
       if (isAllScience === false) {
-         header = this.state.cheatList + " Cheatsheet";
+         header = this.state.cheatList + " Cheatlists";
 
       }
       return (
