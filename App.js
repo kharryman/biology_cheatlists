@@ -54,8 +54,8 @@ class App extends React.Component {
 
       }
       return (
-         <Container>
-            <Image source={require('./images/beaker.jpg')} style={styles.backgroundImage} />
+         <Container style={styles.container}>
+            <Image source={require('./images/DNA.png')} style={styles.backgroundImage} />
             {!listOpen && (
                <View style={{ flex: 1.0 }}>
                   <Header>{header}</Header>
@@ -128,6 +128,9 @@ class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+   container:{
+      backgroundColor:"#EA66FF"
+   },
    backgroundImage: {
       flex: 1,
       resizeMode: "cover", // or 'stretch'
