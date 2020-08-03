@@ -33,7 +33,7 @@ class App extends React.Component {
          subtopic: "Basic",
          listOpen: false,
          screenWidth: screenWidth,
-         screenWidth: screenHeight         
+         screenWidth: screenHeight
       };
       //this.press = this.press.bind(this);
    }
@@ -50,7 +50,7 @@ class App extends React.Component {
       this.setState({ subtopic: subtopic });
    }
 
-   onLayout() {      
+   onLayout() {
       screenWidth = Dimensions.get('window').width;
       screenHeight = Dimensions.get('window').height;
       console.log("onLayout called, screenWidth = " + screenWidth + ", screenHeight = " + screenHeight);
@@ -72,18 +72,18 @@ class App extends React.Component {
       //styles.backgroundImage.width = this.state.screenWidth;
       //styles.backgroundImage.height = this.state.screenHeight * 0.66;
       let aspectRatio = screenHeight / screenWidth;
-      let bgImageHeight = listOpen===true? (screenHeight) : (screenHeight * 0.66);
-      let bgStyle={
+      let bgImageHeight = listOpen === true ? (screenHeight) : (screenHeight * 0.66);
+      let bgStyle = {
          position: 'absolute',
          aspectRatio: aspectRatio,
          resizeMode: 'stretch',
          width: screenWidth,
          height: bgImageHeight,
          opacity: 0.2
-     };
+      };
       return (
          <Container style={styles.container} onLayout={this.onLayout.bind(this)}>
-            <Image source={require('./images/DNA.png')} style={bgStyle}/>
+            <Image source={require('./images/DNA.png')} style={bgStyle} />
             {!listOpen && (
                <View style={{ flex: 1.0 }}>
                   <Header>{header}</Header>
@@ -169,7 +169,7 @@ let styles = StyleSheet.create({
       opacity: 0.2,
       width: screenWidth,
       height: screenHeight * 0.66,
-   }   
+   }
 });
 
 
