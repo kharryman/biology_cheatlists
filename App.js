@@ -9,15 +9,18 @@ import { Button, Text, View, Image, ImageBackground, StyleSheet } from "react-na
 import Loader from './components/Loader';
 import styled from 'styled-components/native';
 import SplashScreen from 'react-native-splash-screen';
+import { Dimensions } from "react-native";
 
 //AD_MOBS APP_ID:ca-app-pub-8514966468184377/6888473916
 const isAllScience = false;
+let screenWidth = Dimensions.get('window').width;
+let screenHeight = Dimensions.get('window').height;
 
 class App extends React.Component {
 
    componentDidMount() {
       SplashScreen.hide()
-    }
+   }
 
    constructor(props) {
       super(props);
@@ -28,7 +31,9 @@ class App extends React.Component {
          cheatListRendered: false,
          staticCheatListView: null,
          subtopic: "Basic",
-         listOpen: false
+         listOpen: false,
+         screenWidth: screenWidth,
+         screenWidth: screenHeight         
       };
       //this.press = this.press.bind(this);
    }
@@ -45,17 +50,40 @@ class App extends React.Component {
       this.setState({ subtopic: subtopic });
    }
 
+   onLayout() {      
+      screenWidth = Dimensions.get('window').width;
+      screenHeight = Dimensions.get('window').height;
+      console.log("onLayout called, screenWidth = " + screenWidth + ", screenHeight = " + screenHeight);
+      this.state.screenWidth = screenWidth;
+      this.state.screenHeight = screenHeight;
+      this.setState({
+         screenWidth: screenWidth,
+         screenWidth: screenHeight,
+      })
+   }
+
    render() {
       const listOpen = this.state.listOpen;
       let header = "Science Cheatsheet";
       let subheader = this.state.subtopic + " Cheatlists";
       if (isAllScience === false) {
          header = this.state.cheatList + " Cheatlists";
-
       }
+      //styles.backgroundImage.width = this.state.screenWidth;
+      //styles.backgroundImage.height = this.state.screenHeight * 0.66;
+      let aspectRatio = screenHeight / screenWidth;
+      let bgImageHeight = listOpen===true? (screenHeight) : (screenHeight * 0.66);
+      let bgStyle={
+         position: 'absolute',
+         aspectRatio: aspectRatio,
+         resizeMode: 'stretch',
+         width: screenWidth,
+         height: bgImageHeight,
+         opacity: 0.2
+     };
       return (
-         <Container style={styles.container}>
-            <Image source={require('./images/DNA.png')} style={styles.backgroundImage} />
+         <Container style={styles.container} onLayout={this.onLayout.bind(this)}>
+            <Image source={require('./images/DNA.png')} style={bgStyle}/>
             {!listOpen && (
                <View style={{ flex: 1.0 }}>
                   <Header>{header}</Header>
@@ -127,20 +155,22 @@ class App extends React.Component {
    };
 }
 
-const styles = StyleSheet.create({
-   container:{
-      backgroundColor:"#EA66FF"
+let styles = StyleSheet.create({
+   container: {
+      backgroundColor: "#EA66FF"
    },
    backgroundImage: {
       flex: 1,
-      resizeMode: "cover", // or 'stretch'
+      resizeMode: "stretch", // or 'stretch'
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
       top: 0,
-      left: -75,
-      opacity: 0.1
-   }
+      opacity: 0.2,
+      width: screenWidth,
+      height: screenHeight * 0.66,
+   }   
 });
+
 
 export default App;

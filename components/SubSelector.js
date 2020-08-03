@@ -173,8 +173,8 @@ export default class SubSelector extends Component {
 
    async onValueChangeCat(value) {
       console.log("onValueChangeCat called, value = " + value);
-      this.setState({ selectedcat: value });
-      this.props.callback(value);
+      this.setState({ selectedcat: value.substring(2) });
+      this.props.callback(value.substring(2));
    }
 
    render() {
@@ -211,22 +211,25 @@ export default class SubSelector extends Component {
       }
       return (
          <View style={styles.viewStyle}>
-            <View style={{ flex: 1.0, fontSize: 14 }}>
+            <View style={{ flex: 1.0, fontSize: 14, borderColr: "black", borderWidth: 2 }}>
                <Picker
                   itemStyle={styles.itemStyle}
                   mode="dropdown"
                   style={styles.pickerStyle}
-                  selectedValue={this.props.subtopic}
+                  selectedValue={"▼ " + this.props.subtopic}
                   onValueChange={this.onValueChangeCat.bind(this)}
                >
-                  {this.state.category.map((item, index) => (
-                     <Picker.Item
-                        color="#0087F0"
-                        label={item.itemName}
-                        value={item.itemName}
-                        index={index}
-                     />
-                  ))}
+                  {this.state.category.map((item, index) => {
+                     return (
+                        <Picker.Item
+                           color="#0087F0"
+                           label={"▼ " + item.itemName}
+                           value={"▼ " + item.itemName}
+                           index={index}
+                           style={{ borderColr: "black", borderWidth: 3 }}
+                        />
+                     );
+                  })}
                </Picker>
             </View>
          </View>
@@ -248,15 +251,21 @@ const styles = StyleSheet.create({
       fontSize: 10,
       fontFamily: "Roboto-Regular",
       color: "#007aff",
-      textAlign: 'right'
+      backgroundColor: "white",
+      textAlign: 'right',
+      borderColor: "black",
+      borderBottomWidth: 5
    },
    pickerStyle: {
       width: "100%",
+      backgroundColor: "white",
       height: 40,
       color: "#007aff",
       fontSize: 14,
       fontFamily: "Roboto-Regular",
-      textAlign: 'right'
+      textAlign: 'right',
+      borderColor: "black",
+      borderWidth: 5
    },
    textStyle: {
       fontSize: 14,
