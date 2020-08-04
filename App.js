@@ -10,6 +10,11 @@ import Loader from './components/Loader';
 import styled from 'styled-components/native';
 import SplashScreen from 'react-native-splash-screen';
 import { Dimensions } from "react-native";
+import { InterstitialAd, TestIds, AdEventType } from '@react-native-firebase/admob';
+
+const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8514966468184377/6888473916';
+//const adUnitId = 'ca-app-pub-8514966468184377/6888473916';
+
 
 //AD_MOBS APP_ID:ca-app-pub-8514966468184377/6888473916
 const isAllScience = false;
@@ -18,9 +23,11 @@ let screenHeight = Dimensions.get('window').height;
 
 class App extends React.Component {
 
+   adClickedListener;
    componentDidMount() {
       SplashScreen.hide()
    }
+
 
    constructor(props) {
       super(props);
@@ -35,7 +42,6 @@ class App extends React.Component {
          screenWidth: screenWidth,
          screenWidth: screenHeight
       };
-      //this.press = this.press.bind(this);
    }
 
    setSubject(subject) {
@@ -132,27 +138,46 @@ class App extends React.Component {
 
    press() {
       console.log("press called, this.state.listOpen = " + this.state.listOpen);
+      console.log("doPress called");
       this.state.listOpen = true;
       this.state.cheatListRendered = false;
       //alert("Hello?");
-      this.setState({ listOpen: true, cheatListRendered: false });
-      Cheatlist.setCheatListData(this.state.cheatList, this.state.subtopic, this.setCheatListRendered.bind(this));
+      this.setState({ listOpen: true, cheatListRendered: false });            
+      this.showInterstitialAd();
+   };
+   doPress() {      
       setTimeout(() => {
          this.state.cheatListRendered = true;
          this.setState({ cheatListRendered: true });
       });
-      /*this.setState(
-         {
-            processing: false,
-            listOpen: !this.state.listOpen,
-            headerTitle: this.props.title,
-            cheatList: this.state.cheatList
-   
-         }
-      );    
-      */
+      //this.setState(
+      //   {
+      //      processing: false,
+      //      listOpen: !this.state.listOpen,
+      //      headerTitle: this.props.title,
+      //      cheatList: this.state.cheatList
+      //
+      //   }
+      //);
+   }
 
-   };
+   showInterstitialAd = () => {
+      // Create a new instance
+      const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+         requestNonPersonalizedAdsOnly: true
+      });
+      interstitial.onAdEvent((type) => {
+         if (type === AdEventType.LOADED) {
+            console.log("AD LOADED!!");
+            interstitial.show();
+         } else if (type === AdEventType.CLOSED) {
+            console.log("AD CLOSED!!");
+            this.doPress();
+         }
+      });
+      interstitial.load();
+      Cheatlist.setCheatListData(this.state.cheatList, this.state.subtopic, this.setCheatListRendered.bind(this));
+   }
 }
 
 let styles = StyleSheet.create({
