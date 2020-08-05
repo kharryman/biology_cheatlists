@@ -54,10 +54,9 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-      List<String> testDeviceIds = Arrays.asList("2A5A9A7C7D984C8B1B9C49E0C1F3009B");
-      RequestConfiguration configuration =
-              new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-      MobileAds.setRequestConfiguration(configuration);
+      //List<String> testDeviceIds = Arrays.asList("2A5A9A7C7D984C8B1B9C49E0C1F3009B");
+      //RequestConfiguration configuration = new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+      //MobileAds.setRequestConfiguration(configuration);
     MobileAds.initialize(this, "ca-app-pub-8514966468184377~3569828390");
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
