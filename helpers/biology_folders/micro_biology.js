@@ -895,14 +895,8 @@ const microBio = {
          "index": 0,
          "title": "Mitochondria",
          "type": "NORMAL",
-         "image": "MITOCHONDRIA",
-         "data": [
-            {
-               "index": 0,
-               "name": null,
-               "value": null
-            }
-         ]
+         "image": "MITOCHONDRIA_MICRO",
+         "data": []
       },      
       {
          "index": 0,

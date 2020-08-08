@@ -134,18 +134,18 @@ android {
         applicationId "com.lfq.biology_cheatlists"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.01"
         multiDexEnabled true
     }
-    splits {
-        abi {
-            reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-        }
-    }
+    //splits {
+    //    abi {
+    //        reset()
+            //enable enableSeparateBuildPerCPUArchitecture
+    //        universalApk true  // If true, also generate a universal APK
+    //        include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+    //    }
+   // }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -207,6 +207,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:16.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation "com.google.firebase:firebase-ads:17.2.1"
+    implementation 'com.google.firebase:firebase-messaging:20.2.3'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'androidx.appcompat:appcompat:1.0.0'

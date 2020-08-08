@@ -170,7 +170,7 @@ class App extends React.Component {
          if (type === AdEventType.LOADED) {
             console.log("AD LOADED!!");
             interstitial.show();
-         } else if (type === AdEventType.CLOSED) {
+         } else if (type === AdEventType.CLOSED || type === AdEventType.ERROR) {
             console.log("AD CLOSED!!");
             this.doPress();
          }

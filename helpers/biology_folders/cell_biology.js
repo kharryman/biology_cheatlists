@@ -1780,8 +1780,7 @@ const cellBio = {
          "index": 4,
          "title": "Mitochondria",
          "type": "NORMAL",
-         "image": "MITOCHONDRIA",
-         "imageFilename":'CELL_BIOLOGY/MITOCHONDRIA.png',
+         "image": "MITOCHONDRIA_CELL",
          "data": []
       },
       {
@@ -2949,21 +2948,13 @@ const cellBio = {
          "title": "The Cell Cycle",
          "type": "NORMAL",
          "image": "CELL_CYCLE",
-         "imageFilename":'CELL_BIOLOGY/CELL_CYCLE.png',
-         "data": [
-            {
-               "index": 0,
-               "name": null,
-               "value": null
-            }
-         ]
+         "data": []
       },
       {
          "index": 4,
          "title": "Cell Cycle Image",
          "type": "NORMAL",
          "image": "CELL_CYCLE_IMAGE",
-         "imageFilename":'CELL_BIOLOGY/CELL_CYCLE_IMAGE.jpg',
          "data": []
       },
       {

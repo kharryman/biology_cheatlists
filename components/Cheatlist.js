@@ -148,7 +148,7 @@ export default class Cheatlist extends Component {
             return (
                <View>
                   {Cheatlist.getTitle(topic)}
-                  {topic.image && (imageWidth > screenWidth) && 
+                  {topic.image && (imageWidth > (screenWidth - 50)) && 
                      <ScrollView decelerationRate={0} horizontal={true} snapToInterval={screenWidth - 60} snapToAlignment={"center"} style={styles.imageScrollView} height={imageHeight}>
                         <Image source={imageUri} style={{flex:1}} width={imageWidth} height={imageHeight} />
                      </ScrollView>
