@@ -134,18 +134,18 @@ android {
         applicationId "com.lfq.biology_cheatlists"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.01"
+        versionCode 3
+        versionName "1.02"
         multiDexEnabled true
     }
-    //splits {
-    //    abi {
-    //        reset()
-            //enable enableSeparateBuildPerCPUArchitecture
-    //        universalApk true  // If true, also generate a universal APK
-    //        include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-    //    }
-   // }
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk true  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')

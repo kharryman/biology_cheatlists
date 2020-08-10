@@ -144,8 +144,10 @@ class App extends React.Component {
       //alert("Hello?");
       this.setState({ listOpen: true, cheatListRendered: false });            
       this.showInterstitialAd();
+      //this.doPress();
    };
    doPress() {      
+      Cheatlist.setCheatListData(this.state.cheatList, this.state.subtopic, this.setCheatListRendered.bind(this));
       setTimeout(() => {
          this.state.cheatListRendered = true;
          this.setState({ cheatListRendered: true });
@@ -175,8 +177,7 @@ class App extends React.Component {
             this.doPress();
          }
       });
-      interstitial.load();
-      Cheatlist.setCheatListData(this.state.cheatList, this.state.subtopic, this.setCheatListRendered.bind(this));
+      interstitial.load();      
    }
 }
 

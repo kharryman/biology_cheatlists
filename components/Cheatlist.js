@@ -116,6 +116,8 @@ export default class Cheatlist extends Component {
             let imageWidth = 0;
             let imageHeight = 0;
             let imageUri = null;
+            let newHeight = 200;
+            let screenWidthAdj = 50;
             //let imageFilename = null;
             if (topic.image) {
                imageUri = Images[selectedSubtopicFolder][topic.image];
@@ -132,8 +134,11 @@ export default class Cheatlist extends Component {
                //   console.log("imageHeight = " + imageHeight);
                //}else{             
                   imageHeight = height;
-                  imageWidth = width;
+                  imageWidth = width;                  
                   console.log("Image original width = " + imageWidth + ", height = " + imageHeight);
+                  if((imageWidth <= (screenWidth - screenWidthAdj))){
+                    newHeight = imageHeight * (screenWidth / imageWidth);
+                  }
                }catch(error){
                   imageHeight = 200;
                   imageWidth = screenWidth;
@@ -153,8 +158,8 @@ export default class Cheatlist extends Component {
                         <Image source={imageUri} style={{flex:1}} width={imageWidth} height={imageHeight} />
                      </ScrollView>
                   }
-                  {topic.image && (imageWidth <= screenWidth) && 
-                        <Image source={imageUri} style={{resizeMode: "stretch"}} width={imageWidth} height={imageHeight}/>
+                  {topic.image && (imageWidth <= (screenWidth - screenWidthAdj)) && 
+                        <Image source={imageUri} style={{resizeMode: "stretch", width: "100%", height: newHeight}}/>
                   }                  
                   {topic.data.map((item) => {
                      { return this.getDataItem(item, 'NORMAL') }
@@ -396,7 +401,7 @@ const styles = StyleSheet.create({
    },
    fixedImage:
    {
-      resizeMode: "contain",
+      resizeMode: "stretch",
       width: "100%"
    },   
    scrolledImage:
