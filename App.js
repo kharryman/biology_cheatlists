@@ -14,7 +14,7 @@ import { Dimensions } from "react-native";
 import { InterstitialAd, TestIds, AdEventType } from '@react-native-firebase/admob';
 import Rate, { AndroidMarket } from 'react-native-rate'
 //import { useNavigation } from '@react-navigation/native';
-
+//
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8514966468184377/6888473916';
 //const adUnitId = 'ca-app-pub-8514966468184377/6888473916';
 
