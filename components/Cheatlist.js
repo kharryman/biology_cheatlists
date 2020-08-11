@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, SectionList, StyleSheet, Text, View, Image, ScrollView, SafeAreaView } from 'react-native';
+import { BackHandler, FlatList, SectionList, StyleSheet, Text, View, Image, ScrollView, SafeAreaView } from 'react-native';
 import Images from '../images/index';
 //BIOLOGY, CHEMISTRY, COMPUTERS(computer science), ECOLOGY, OCEANOGRAPHY, GEOLOGY, METEOROLOGY, PHYSICS
 import biologyCheatlistData from '../helpers/biology_cheatlist_data';
@@ -11,7 +11,7 @@ import geologyCheatlistData from '../helpers/geology_cheatlist_data';
 import meteorologyCheatlistData from '../helpers/meteorology_cheatlist_data';
 import physicsCheatlistData from '../helpers/physics_cheatlist_data';
 import MathExpression from '../components/Math';
-import {Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 var RNFS = require('react-native-fs');
 //import resolveAssetSource from 'resolveAssetSource';
 //import Constants from 'expo-constants';
@@ -28,10 +28,17 @@ export default class Cheatlist extends Component {
          cheatListView: this.props.staticCheatListView,
          isRendered: false
       };
+      //this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
    }
 
-   //async componentDidMount(){
-   //}
+
+   componentDidMount(){
+      //BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+   }
+
+   componentWillUnmount() {
+      //BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+   }
 
    static async setCheatListData(cheatList, subtopic, callback) {
       console.log("setCheatListData called, subtopic=" + subtopic);
@@ -41,7 +48,7 @@ export default class Cheatlist extends Component {
       //let subtopicFolder = this.props.subtopicFolder;
       let selectedSubtopicFolder = selectedSubtopic.match(/^[a-zA-Z0-9\s-]*/)[0];
       selectedSubtopicFolder = selectedSubtopicFolder.replace(/ /g, '_').toUpperCase();
-      selectedSubtopicFolder = selectedSubtopicFolder.replace(/-/g, '_').toUpperCase();      
+      selectedSubtopicFolder = selectedSubtopicFolder.replace(/-/g, '_').toUpperCase();
       console.log("setCheatListData selectedSubtopicFolder = " + selectedSubtopicFolder);
       //let imageFilename = "";
       let filteredTopic = {};
@@ -74,7 +81,7 @@ export default class Cheatlist extends Component {
             break;
          default:
             filteredTopic = biologyCheatlistData;
-      }      
+      }
       //console.log("setCheatListData selectedSubtopic = " + selectedSubtopic + ".");
       let filteredSubtopic = filteredTopic.data.filter((subtopic) => {
          //console.log("setCheatListData subtopic.itemName = " + subtopic.itemName + ".");
@@ -123,23 +130,23 @@ export default class Cheatlist extends Component {
                imageUri = Images[selectedSubtopicFolder][topic.image];
                //imageFilename = 'file://' + RNFS.DocumentDirectoryPath + '/images/' + topic.imageFilename;
                //imageHeight = 100;
-               try{
-               let height= Image.resolveAssetSource(imageUri).height;
-               let width = Image.resolveAssetSource(imageUri).width;
-               //if (topic.imageHeight) {
-               //   console.log("Image BEFORE ADJUSTED width = " + width + ", height = " + height);
-               //   imageHeight = parseInt(topic.imageHeight);
-               //   imageWidth = parseInt(Math.floor(width * (parseFloat(imageHeight) / parseFloat(height)))); 
-               //   console.log("Image AFTER ADJUSTED width = " + imageWidth + ", height = " + imageHeight);
-               //   console.log("imageHeight = " + imageHeight);
-               //}else{             
+               try {
+                  let height = Image.resolveAssetSource(imageUri).height;
+                  let width = Image.resolveAssetSource(imageUri).width;
+                  //if (topic.imageHeight) {
+                  //   console.log("Image BEFORE ADJUSTED width = " + width + ", height = " + height);
+                  //   imageHeight = parseInt(topic.imageHeight);
+                  //   imageWidth = parseInt(Math.floor(width * (parseFloat(imageHeight) / parseFloat(height)))); 
+                  //   console.log("Image AFTER ADJUSTED width = " + imageWidth + ", height = " + imageHeight);
+                  //   console.log("imageHeight = " + imageHeight);
+                  //}else{             
                   imageHeight = height;
-                  imageWidth = width;                  
+                  imageWidth = width;
                   console.log("Image original width = " + imageWidth + ", height = " + imageHeight);
-                  if((imageWidth <= (screenWidth - screenWidthAdj))){
-                    newHeight = imageHeight * (screenWidth / imageWidth);
+                  if ((imageWidth <= (screenWidth - screenWidthAdj))) {
+                     newHeight = imageHeight * (screenWidth / imageWidth);
                   }
-               }catch(error){
+               } catch (error) {
                   imageHeight = 200;
                   imageWidth = screenWidth;
                }
@@ -153,14 +160,14 @@ export default class Cheatlist extends Component {
             return (
                <View>
                   {Cheatlist.getTitle(topic)}
-                  {topic.image && (imageWidth > (screenWidth - 50)) && 
+                  {topic.image && (imageWidth > (screenWidth - 50)) &&
                      <ScrollView decelerationRate={0} horizontal={true} snapToInterval={screenWidth - 60} snapToAlignment={"center"} style={styles.imageScrollView} height={imageHeight}>
-                        <Image source={imageUri} style={{flex:1}} width={imageWidth} height={imageHeight} />
+                        <Image source={imageUri} style={{ flex: 1 }} width={imageWidth} height={imageHeight} />
                      </ScrollView>
                   }
-                  {topic.image && (imageWidth <= (screenWidth - screenWidthAdj)) && 
-                        <Image source={imageUri} style={{resizeMode: "stretch", width: "100%", height: newHeight}}/>
-                  }                  
+                  {topic.image && (imageWidth <= (screenWidth - screenWidthAdj)) &&
+                     <Image source={imageUri} style={{ resizeMode: "stretch", width: "100%", height: newHeight }} />
+                  }
                   {topic.data.map((item) => {
                      { return this.getDataItem(item, 'NORMAL') }
                   })}
@@ -403,7 +410,7 @@ const styles = StyleSheet.create({
    {
       resizeMode: "stretch",
       width: "100%"
-   },   
+   },
    scrolledImage:
    {
       resizeMode: "contain",

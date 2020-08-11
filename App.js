@@ -5,12 +5,15 @@ import { Container, Header, GoButton, Input, Processing, Prompt } from './compon
 import Selector from './components/Selector';
 import SubSelector from './components/SubSelector';
 import Cheatlist from './components/Cheatlist';
-import { Button, Text, View, Image, ImageBackground, StyleSheet } from "react-native";
+import Rating from './components/Rating';
+import { Alert, AppState, BackHandler, Button, Navigator, Text, View, Image, ImageBackground, StyleSheet } from "react-native";
 import Loader from './components/Loader';
 import styled from 'styled-components/native';
 import SplashScreen from 'react-native-splash-screen';
 import { Dimensions } from "react-native";
 import { InterstitialAd, TestIds, AdEventType } from '@react-native-firebase/admob';
+import Rate, { AndroidMarket } from 'react-native-rate'
+//import { useNavigation } from '@react-navigation/native';
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-8514966468184377/6888473916';
 //const adUnitId = 'ca-app-pub-8514966468184377/6888473916';
@@ -25,7 +28,79 @@ class App extends React.Component {
 
    adClickedListener;
    componentDidMount() {
-      SplashScreen.hide()
+      SplashScreen.hide();
+      //AppState.addEventListener('change', this.handleAppStateChange);
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+      this.state.isAppClosing = false;
+      this.setState({ isAppClosing: false });
+   }
+
+   componentWillUnmount() {
+      //AppState.removeEventListener('change', this.handleAppStateChange);
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+   }
+
+   handleBackButtonClick() {
+      console.log("handleBackButtonClick called");      
+      //this.props.navigation.goBack(null);
+      //const navigation = useNavigation();
+      //navigation.goBack(null);      
+      this.state.isAppClosing = true;
+      this.setState({ isAppClosing: true });      
+      Alert.alert(
+         'Leaving?',
+         'Give Biology Cheatlists 5 Stars?',
+         [
+           {
+             text: 'Bye',
+             onPress: () => {
+                console.log('Bye pressed');
+                this.state.isAppClosing = true;
+                this.setState({ isAppClosing: true });
+                BackHandler.exitApp();
+                //return true;
+             }
+           },
+           {
+             text: 'Yes!',
+             onPress: () => {
+                console.log('Yes! Pressed');
+                this.state.isAppClosing = true;
+                this.setState({ isAppClosing: true });
+                const options = {
+                  AppleAppID:"2193813192",
+                  GooglePackageName:"com.lfq.biology_cheatlists",
+                  //AmazonPackageName:"com.mywebsite.myapp",
+                  //OtherAndroidURL:"http://www.randomappstore.com/app/47172391",
+                  preferredAndroidMarket: AndroidMarket.Google,
+                  preferInApp:true,
+                  openAppStoreIfInAppFails:true,
+                  //fallbackPlatformURL:"http://www.mywebsite.com/myapp.html",
+                }
+                Rate.rate(options, success=>{
+                  if (success) {
+                    // this technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
+                    this.setState({rated:true})
+                  }
+                })                
+                BackHandler.exitApp();
+                //return true;
+             },
+             style: 'cancel'
+           }
+         ],
+         { cancelable: false }
+       );      
+       console.log("handleBackButtonClick ALERT CREATED???!!!!");       
+       return true;
+       
+   }   
+
+   handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'inactive') {
+         console.log('the app is closed');
+
+      }
    }
 
 
@@ -40,8 +115,12 @@ class App extends React.Component {
          subtopic: "Basic",
          listOpen: false,
          screenWidth: screenWidth,
-         screenWidth: screenHeight
+         screenWidth: screenHeight,
+         isAppClosing: false
       };
+      this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+      //this.goBack = this.goBack.bind(this);
+      //this.props.navigation.goBack = this.props.navigation.goBack(this);
    }
 
    setSubject(subject) {
@@ -90,7 +169,7 @@ class App extends React.Component {
       return (
          <Container style={styles.container} onLayout={this.onLayout.bind(this)}>
             <Image source={require('./images/DNA.png')} style={bgStyle} />
-            {!listOpen && (
+            {!listOpen && this.state.isAppClosing === false && (
                <View style={{ flex: 1.0 }}>
                   <Header>{header}</Header>
                   <Prompt>Please select a subject:</Prompt>
@@ -101,6 +180,9 @@ class App extends React.Component {
                   <GoButton text="Go" callback={() => { this.press() }}>
                   </GoButton>
                </View >
+            )}
+            {!listOpen && this.state.isAppClosing === true && (
+               <Rating />
             )}
             {
                listOpen && (
@@ -142,11 +224,11 @@ class App extends React.Component {
       this.state.listOpen = true;
       this.state.cheatListRendered = false;
       //alert("Hello?");
-      this.setState({ listOpen: true, cheatListRendered: false });            
-      this.showInterstitialAd();
-      //this.doPress();
+      this.setState({ listOpen: true, cheatListRendered: false });
+      //this.showInterstitialAd();
+      this.doPress();
    };
-   doPress() {      
+   doPress() {
       Cheatlist.setCheatListData(this.state.cheatList, this.state.subtopic, this.setCheatListRendered.bind(this));
       setTimeout(() => {
          this.state.cheatListRendered = true;
@@ -177,7 +259,7 @@ class App extends React.Component {
             this.doPress();
          }
       });
-      interstitial.load();      
+      interstitial.load();
    }
 }
 
